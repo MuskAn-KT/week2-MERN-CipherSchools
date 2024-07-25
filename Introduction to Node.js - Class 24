@@ -1,0 +1,72 @@
+:: App.js
+
+console.log(global)
+
+setTimeout (() => {
+    console.log('Timed it for 2 seconds')
+}, 2000)
+
+var time = 0;
+setInterval( () => {
+    time += 2;
+    console.log(time, 'Time passed')
+    if(time > 10){
+        clearInterval(time)
+    }
+},2000)
+
+console.log(__dirname)
+console.log(__filename)
+---------------------------------------------------------------------------------------------------------------------
+:: Function.js
+
+one();
+
+function one() {
+    console.log("Normal function")
+}
+let two = function () {
+    console.log("Two")
+}
+
+two();
+
+function three(callBack) {
+    callBack();
+}
+--------------------------------------------------------------------------------------------------------------------
+:: Provider.js
+
+var counter = (arr) => {
+    return "this array has " + arr.length + " elements"
+};
+// addition(2,4)
+var addition = (a,b) => {
+    return `the sum is ${a+b}`
+}
+
+const constant = 9.4561;
+module.export.counter = counter;
+module.export.addition = addition;
+module.export.constant = constant;
+
+
+----------------------------------------------------------------------------------------------------------------------
+:: Server.js
+
+var http = require('http');
+
+let server = http.createServer((reuqest, response) => {
+    response.end("hello world")
+})
+server.listen(5000, 'localhost', () => {
+    console.log("started the server on port 5000")
+})
+
+---------------------------------------------------------------------------------------------------------------------
+:: tempCodeRunnerFile.js
+
+const constant = 9.4561;
+module.export.counter = counter;
+module.export.addition = addition;
+module.export.constant = constant;
