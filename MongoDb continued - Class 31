@@ -1,0 +1,141 @@
+:: models 
+
+--album.js
+
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+// Albums { name: tracks: songs: [ { name: , artist: }]}
+
+const SongListSchema = new Schema({
+  artist: String,
+  title: String,
+});
+
+const AlbumSchema = new Schema({
+  name: String,
+  tracks: Number,
+  songs: [SongListSchema],
+});
+
+const Album = mongoose.model("Album", AlbumSchema);
+
+module.exports = Album;
+
+--user.js
+
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema({
+  name: String,
+  age: Number,
+});
+
+const Users = mongoose.model("person", UserSchema);
+
+module.exports = Users;
+---------------------------------------------------------------------------------------------------------------------
+
+:: test
+
+-- connection.js
+const mongoose = require("mongoose");
+
+const URL =
+  "mongodb+srv://new-user-123:new-user-123@testcluster.vyftd.mongodb.net/test?retryWrites=true&w=majority";
+
+before((done) => {
+  mongoose.connect(URL);
+  // Event driven node.js
+  // Asynchronous
+  mongoose.connection
+    .once("open", () => {
+      console.log("Connection to the Database successful");
+      done();
+    })
+    .on("error", (error) => {
+      console.log("Unable to connect", error);
+    });
+});
+
+// Drop my collections before each test
+beforeEach((done) => {
+  mongoose.connection.collections.people.drop(() => {
+    done();
+  });
+});
+
+
+-- deleting_data.js
+const assert = require("assert");
+const User = require("./../models/user");
+
+describe("deleting records", () => {
+  let newUser;
+  beforeEach((done) => {
+    newUser = new User({
+      name: "Jake",
+      age: 30,
+    });
+    newUser.save().then(() => {
+      done();
+    });
+  });
+  it("it deletes one record from the db", (done) => {
+    User.findByIdAndDelete({ _id: newUser._id }).then(() => {
+      User.findById({ _id: newUser._id }).then((data) => {
+        assert(data === null);
+        done();
+      });
+    });
+  });
+});
+
+
+-- demo_test.js
+const assert = require("assert");
+
+describe("demo test", () => {
+  it("add two numbers", () => {
+    assert(2 + 3 === 5);
+  });
+  it("substract two numbers", () => {
+    assert(1 - 1 === 0);
+  });
+});
+
+
+-- updating_data.js
+const assert = require("assert");
+const User = require("./../models/user");
+
+describe("Updating records", () => {
+  let newUser;
+  beforeEach((done) => {
+    newUser = new User({
+      name: "Jon Snow",
+      age: 16,
+    });
+    newUser.save().then((data) => {
+      console.log(data);
+      done();
+    });
+  });
+
+  it("it updates one record in the db", (done) => {
+    User.findOneAndUpdate(
+      { name: "Jon Snow" },
+      { name: "Arya", age: 24 },
+      { useFindAndModify: false }
+    ).then((data) => {
+      console.log(data);
+      User.findById({ _id: newUser._id }).then((result) => {
+        console.log(result);
+        assert(result.name === "Arya");
+        done();
+      });
+    });
+  });
+});
+
