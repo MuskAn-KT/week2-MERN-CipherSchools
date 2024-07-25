@@ -1,0 +1,65 @@
+:: objects
+
+let person =  {
+    name: 'sam',
+    age: 20,
+    email: 'xyz@gmail.com',
+    status: 'true',
+    children: {
+        name: 'john',
+        age: 10
+    },
+    hobbies: {
+        h1: 'music', 
+        h2: 'games'
+    },
+    login: function(){
+        console.log('Logged in')
+    },
+    
+}
+console.log(person.name)
+console.log(person.children.name)
+console.log(person.hobbies.h1)
+console.log(person.login())
+
+console.log(this)
+
+
+
+let functions4 = function = () => {
+     console.log(this)
+}
+
+---------------------------------------------------------------------------------------------------------------------
+
+:: oops
+
+// console.log(name: 'bugatti')
+
+class Person {
+    constructor(name, email, count=0){
+        this.name = name;
+        this.email = email;
+        this.count = count;
+    }
+    login(){
+        console.log(this.name, 'has logged in')
+    }
+    logout(){
+        console.log(this.name, 'has logged out')
+    }
+}
+
+let person1 = new Person('aryaman', 'a@a.com')
+let person2 = new Person('ashish', 'b@b.com')
+let person3 = new Person()
+person1.login();
+person2.login();
+console.log(person3.name)
+
+let rollNumber = new Number(10);
+console.log(rollNumber)
+
+let name = new String('anav');
+console.log(name)
